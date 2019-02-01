@@ -26,7 +26,8 @@ Request ```/upload and /response-status``` using curl \
 
 ### /index
 Example: \
-http://127.0.0.1:8000/index/AAPL \
+```http://127.0.0.1:8000/index/AAPL``` \
 AAPL can be replaced with any valid stock ticker \
-Response
+Response: \
+   https://github.com/ryank01/Python-Chalice-Example/issues/1#issue-405874557
   
