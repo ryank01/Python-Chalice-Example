@@ -1,0 +1,64 @@
+<head>
+    <link rel="shortcut icon" href="#">
+    <meta charset="utf-8"/>
+    <title>ADX chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" type="text/javascript"></script>
+</head>
+
+<h1>Realtime ADX data</h1>
+<canvas id="myChart" width="600" height="400"></canvas>
+<p id="caption">
+    Average directional index (ADX) is used to determine when the price is trending strongly.<br/>
+    ADX is based on a moving average of price range expansion over some time period, it can be used
+    on any trading vehicle.
+</p>
+
+<p id="adx-metrics">
+    Current ADX: {{current_adx}}<br/>
+    Max ADX: {{max_adx}}<br/>
+    Min ADX: {{min_adx}}<br/>
+</p>
+
+<script>
+var chartData = {
+    labels : [
+        {% for item in time_interval %}
+            "{{item}}",
+        {% endfor %}
+    ],
+    
+    datasets : [{
+        label: "{{legend}}",
+        fill: true,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75, 192, 192, 0.4)",
+        borderColor: "rgba(75, 192, 192, 1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75, 192, 192, 1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgoundColor: "rgba(75, 192, 192, 1)",
+        pointHoverBorderColor: "rgba(220, 220, 220, 1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data : [
+            {% for item in index_rating %}
+                {{item}},
+            {% endfor %}
+        ],
+        spanGaps: false
+    }]
+}
+
+var ctx = document.getElementById("myChart").getContext("2d");
+
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: chartData,
+});
+</script>
