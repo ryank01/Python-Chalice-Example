@@ -26,8 +26,22 @@ Request ```/upload and /response-status``` using curl \
 
 ### /index
 Example: \
-```http://127.0.0.1:8000/index/AAPL``` \
+Visit ```http://127.0.0.1:8000/index/AAPL```  in any browser \
 AAPL can be replaced with any valid stock ticker \
 Response: \
    https://github.com/ryank01/Python-Chalice-Example/issues/1#issue-405874557
   
+### /upload
+Example:
+```
+   curl -X POST \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+--data-binary @'</absolute/path/to/file>' \
+localhost:8000/upload
+
+```
+Response:
+```
+   https://s3-us-west-2.amazonaws.com/chalice-app/BBDL8CW56L.png
+```
+Open the generated url in any browser to see the png image \
