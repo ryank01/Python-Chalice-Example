@@ -1,4 +1,4 @@
-from chalice import Chalice, Response, IAMAuthorizer
+from chalice import Chalice, Response
 import requests
 import os
 import jinja2
@@ -9,22 +9,22 @@ import string
 app = Chalice(app_name='adx')
 
 def render(tpl_path, context):
+    '''Helper to render jinja template'''
     path, filename = os.path.split(tpl_path)
     return jinja2.Environment(loader=jinja2.FileSystemLoader(path or "./")).get_template(filename).render(context)
 
 @app.route('/index/{params}', methods=['GET'], cors=True)
 def index(params):
+    '''Call public api, render data in browser'''
     response = requests.get("https://www.alphavantage.co/query?function=ADX&symbol={}&interval=daily&time_period=10&apikey=K87BB8H31SVY3OBA".format(params))
     data = response.json()
     time_interval = []
     index_rating = []
-    my_dict = {}
     legend = "ADX graph"
 
     for k, v in data['Technical Analysis: ADX'].items():
         time_interval.append(k)
         index_rating.append(float(v['ADX']))
-        my_dict[k] = v['ADX']
 
     current_adx = index_rating[0]
     max_adx = max(index_rating)
@@ -48,6 +48,7 @@ def index(params):
 
 @app.route('/upload', methods=['POST'], content_types=['application/x-www-form-urlencoded'])
 def upload():
+    '''Upload image to s3 using boto3'''
     image_data = app.current_request.raw_body
 
     s3 = boto3.client('s3')
@@ -68,6 +69,23 @@ def upload():
 
     return {'image-location': image_location}
 
+
+@app.route('/response-status', methods=['GET'])
+def status():
+    '''Returns a simple status message'''
+    status = {
+        'body': None,
+        'status_code': None
+        }
+    try:
+        response = requests.get("http://api.open-notify.org/iss-now.json")
+        status['body'] = 'success'
+        status['status_code'] = response.status_code
+        return status
+    except:
+        status['body'] = 'failed'
+        status['status_code'] = response.status_code
+        return status
 
 
 # The view function above will return {"hello": "world"}
