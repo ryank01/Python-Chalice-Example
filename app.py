@@ -74,12 +74,12 @@ def upload():
 def status():
     '''Returns a simple status message'''
     status = {
-        'body': None,
+        'message': None,
         'status_code': None
         }
     try:
         response = requests.get("http://api.open-notify.org/iss-now.json")
-        status['body'] = 'success'
+        status['message'] = 'success'
         status['status_code'] = response.status_code
         return status
     except:
