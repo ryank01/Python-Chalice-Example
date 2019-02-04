@@ -61,7 +61,7 @@ Visit in browser or use curl
 Response:
 ```
    {
-"body": "success",
+"message": "success",
 "status_code": 200
 }
 ```
